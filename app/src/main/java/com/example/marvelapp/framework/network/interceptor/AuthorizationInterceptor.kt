@@ -17,13 +17,12 @@ class AuthorizationInterceptor(
         val request = chain.request()
         val requestUrl = request.url
 
-        val ts = (calendar.timeInMillis / 1000L).toString()
+        val ts = (calendar.timeInMillis / 1000L).toString() // time in seconds
         val hash = "$ts$privateKey$publicKey".md5()
-
         val newUrl = requestUrl.newBuilder()
-            .addQueryParameter(QUERY_PARAM_TS, ts)
-            .addQueryParameter(QUERY_PARAM_API_KEY, publicKey)
-            .addQueryParameter(QUERY_PARAM_HASH, hash)
+            .addQueryParameter(QUERY_PARAMETER_TS, ts)
+            .addQueryParameter(QUERY_PARAMETER_API_KEY, publicKey)
+            .addQueryParameter(QUERY_PARAMETER_HASH, hash)
             .build()
 
         return chain.proceed(
@@ -33,16 +32,15 @@ class AuthorizationInterceptor(
         )
     }
 
-    // gerar um hash MD5
     @Suppress("MagicNumber")
     private fun String.md5(): String {
         val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(toByteArray())).toString(16)
+        return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
     }
 
     companion object {
-        private const val QUERY_PARAM_TS = "ts"
-        private const val QUERY_PARAM_API_KEY = "apiKey"
-        private const val QUERY_PARAM_HASH = "hash"
+        private const val QUERY_PARAMETER_TS = "ts"
+        private const val QUERY_PARAMETER_API_KEY = "apikey"
+        private const val QUERY_PARAMETER_HASH = "hash"
     }
 }
