@@ -53,7 +53,11 @@ class CharactersFragment : Fragment() {
         charactersAdapter = CharactersAdapter()
         binding.recyclerCharacters.run {
             setHasFixedSize(true)
-            adapter = charactersAdapter
+            adapter = charactersAdapter.withLoadStateFooter(
+                footer = CharactersLoadStateAdapter(
+                    charactersAdapter::retry
+                )
+            )
         }
     }
 
