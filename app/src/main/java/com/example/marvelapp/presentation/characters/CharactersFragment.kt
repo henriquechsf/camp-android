@@ -52,6 +52,7 @@ class CharactersFragment : Fragment() {
     private fun initCharactersAdapter() {
         charactersAdapter = CharactersAdapter()
         binding.recyclerCharacters.run {
+            scrollToPosition(0)
             setHasFixedSize(true)
             adapter = charactersAdapter.withLoadStateFooter(
                 footer = CharactersLoadStateAdapter(
