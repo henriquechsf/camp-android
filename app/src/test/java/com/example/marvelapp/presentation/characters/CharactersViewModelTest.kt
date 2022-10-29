@@ -1,19 +1,13 @@
 package com.example.marvelapp.presentation.characters
 
 import androidx.paging.PagingData
-import com.example.core.domain.model.Character
 import com.example.core.usecase.GetCharactersUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -22,6 +16,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import tech.henriquedev.testing.MainCoroutineRule
+import tech.henriquedev.testing.model.CharacterFactory
 
 @RunWith(MockitoJUnitRunner::class)
 class CharactersViewModelTest {
@@ -37,8 +32,8 @@ class CharactersViewModelTest {
 
     private val pagingDataCharacters = PagingData.from(
         listOf(
-            Character("3-D Man", "https://any-url.jpg"),
-            Character("A-Bomb", "https://any-url.jpg"),
+            CharacterFactory.create(CharacterFactory.Hero.ABomb),
+            CharacterFactory.create(CharacterFactory.Hero.ThreeDMan)
         )
     )
 
