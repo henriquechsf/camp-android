@@ -2,13 +2,13 @@ package com.example.marvelapp.framework.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class DataContainerResponse(
-    @SerializedName("results")
-    val results: List<CharacterResponse>,
-
+data class DataContainerResponse<T>(
     @SerializedName("offset")
     val offset: Int,
 
     @SerializedName("total")
-    val total: Int
+    val total: Int,
+
+    @SerializedName("results")
+    val results: List<T>,
 )
