@@ -21,13 +21,13 @@ class DetailViewModel @Inject constructor(
     val uiState: LiveData<UiState> get() = _uiState
 
     fun getComics(characterId: Int) = viewModelScope.launch {
-        getComicsUseCase(GetComicsUseCase.Params(characterId))
+         getComicsUseCase(GetComicsUseCase.Params(characterId))
             .watchStatus()
     }
 
     private fun Flow<ResultStatus<List<Comic>>>.watchStatus() = viewModelScope.launch {
         collect { status ->
-            when (status) {
+            _uiState.value = when (status) {
                 ResultStatus.Loading -> UiState.Loading
                 is ResultStatus.Success -> UiState.Success(status.data)
                 is ResultStatus.Error -> UiState.Error

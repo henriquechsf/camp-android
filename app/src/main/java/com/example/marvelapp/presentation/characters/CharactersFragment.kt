@@ -36,7 +36,7 @@ class CharactersFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentCharactersBinding.inflate(inflater, container, false)
         .apply { _binding = this }.root
 
@@ -65,7 +65,11 @@ class CharactersFragment : Fragment() {
             val directions = CharactersFragmentDirections
                 .actionCharactersFragmentToDetailFragment(
                     character.name,
-                    DetailViewArg(character.name, character.imageUrl)
+                    DetailViewArg(
+                        characterId = character.id,
+                        name = character.name,
+                        imageUrl = character.imageUrl
+                    )
                 )
 
             findNavController().navigate(directions, extras)
