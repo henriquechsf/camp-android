@@ -37,6 +37,7 @@ class DetailFragment : Fragment() {
             _binding = this
         }.root
 
+    @Suppress("UnusedPrivateMember")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -45,11 +46,7 @@ class DetailFragment : Fragment() {
         binding.imageCharacter.run {
             transitionName = detailViewArg.name
 
-            imageLoader.load(
-                imageView = this,
-                imageUrl = detailViewArg.imageUrl,
-                fallback = R.drawable.ic_img_loading_error
-            )
+            imageLoader.load(imageView = this, imageUrl = detailViewArg.imageUrl)
         }
 
         // transicao animacao da imagem
@@ -58,7 +55,10 @@ class DetailFragment : Fragment() {
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             val logResult = when (uiState) {
                 DetailViewModel.UiState.Loading -> {}
-                is DetailViewModel.UiState.Success -> {}
+                is DetailViewModel.UiState.Success -> binding.recyclerParentDetail.run {
+                    setHasFixedSize(true)
+                    this.adapter = DetailParentAdapter(uiState.detailParentList, imageLoader)
+                }
                 DetailViewModel.UiState.Error -> {}
             }
         }

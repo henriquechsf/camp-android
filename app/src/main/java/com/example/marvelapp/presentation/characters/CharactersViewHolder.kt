@@ -12,7 +12,7 @@ import com.example.marvelapp.util.OnCharacterItemClick
 class CharactersViewHolder(
     itemCharacterBinding: ItemCharacterBinding,
     private val imageLoader: ImageLoader,
-    private val onItemClick: OnCharacterItemClick
+    private val onItemClick: OnCharacterItemClick,
 ) : RecyclerView.ViewHolder(itemCharacterBinding.root) {
 
     private val textName = itemCharacterBinding.textName
@@ -23,11 +23,7 @@ class CharactersViewHolder(
 
         imageCharacter.transitionName = character.name
 
-        imageLoader.load(
-            imageView = imageCharacter,
-            imageUrl = character.imageUrl,
-            fallback = R.drawable.ic_img_loading_error
-        )
+        imageLoader.load(imageView = imageCharacter, imageUrl = character.imageUrl)
 
         itemView.setOnClickListener {
             onItemClick.invoke(character, imageCharacter)
@@ -38,7 +34,7 @@ class CharactersViewHolder(
         fun create(
             parent: ViewGroup,
             imageLoader: ImageLoader,
-            onItemClick: OnCharacterItemClick
+            onItemClick: OnCharacterItemClick,
         ): CharactersViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val itemBinding = ItemCharacterBinding.inflate(inflater, parent, false)
