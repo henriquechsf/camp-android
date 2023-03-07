@@ -7,11 +7,11 @@ class CharacterFactory {
     companion object {
         fun create(hero: Hero) = when (hero) {
             Hero.ThreeDMan -> Character(
-                id = 100,
+                id = 1011334,
                 name = "3-D Man",
                 imageUrl = "https://any-url.jpg"
             )
-            Hero.ABomb -> Character(id = 101, name = "A-Bomb", imageUrl = "https://any-url.jpg")
+            Hero.ABomb -> Character(id = 1017100, name = "A-Bomb", imageUrl = "https://any-url.jpg")
         }
     }
 

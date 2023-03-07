@@ -18,10 +18,10 @@ import org.mockito.junit.MockitoJUnitRunner
 import tech.henriquedev.testing.MainCoroutineRule
 import tech.henriquedev.testing.model.CharacterFactory
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CharactersViewModelTest {
 
-    @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
@@ -37,32 +37,31 @@ class CharactersViewModelTest {
         )
     )
 
-    @ExperimentalCoroutinesApi
     @Before
     fun setup() {
         charactersViewModel = CharactersViewModel(getCharactersUseCase)
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun `should validate the paging data object values when calling charactersPagingData`() = runBlockingTest {
-        whenever(
-            getCharactersUseCase.invoke(any())
-        ).thenReturn(
-            flowOf(pagingDataCharacters)
-        )
+    fun `should validate the paging data object values when calling charactersPagingData`() =
+        runBlockingTest {
+            whenever(
+                getCharactersUseCase.invoke(any())
+            ).thenReturn(
+                flowOf(pagingDataCharacters)
+            )
 
-        val result = charactersViewModel.charactersPagingData("")
+            val result = charactersViewModel.charactersPagingData("")
 
-        assertEquals(1, result.count())
-    }
+            assertEquals(1, result.count())
+        }
 
-    @ExperimentalCoroutinesApi
     @Test(expected = RuntimeException::class)
-    fun `should throw an exception when the calling to the use case returns an exception`() = runBlockingTest {
-        whenever(getCharactersUseCase.invoke(any()))
-            .thenThrow(RuntimeException())
+    fun `should throw an exception when the calling to the use case returns an exception`() =
+        runBlockingTest {
+            whenever(getCharactersUseCase.invoke(any()))
+                .thenThrow(RuntimeException())
 
-        charactersViewModel.charactersPagingData("")
-    }
+            charactersViewModel.charactersPagingData("")
+        }
 }
