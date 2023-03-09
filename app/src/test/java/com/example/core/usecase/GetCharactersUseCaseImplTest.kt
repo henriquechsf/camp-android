@@ -25,9 +25,11 @@ class GetCharactersUseCaseImplTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
+    private lateinit var getCharactersUseCase: GetCharactersUseCase
+
     @Mock
     lateinit var repository: CharactersRepository
-    private lateinit var getCharactersUseCase: GetCharactersUseCase
+
     private val fakePagingSource = PagingSourceFactory().create(
         listOf(CharacterFactory.create(CharacterFactory.Hero.ThreeDMan))
     )
