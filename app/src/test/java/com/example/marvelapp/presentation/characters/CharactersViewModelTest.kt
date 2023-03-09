@@ -25,10 +25,11 @@ class CharactersViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
+    // class under test
+    private lateinit var charactersViewModel: CharactersViewModel
+
     @Mock
     lateinit var getCharactersUseCase: GetCharactersUseCase
-
-    private lateinit var charactersViewModel: CharactersViewModel
 
     private val pagingDataCharacters = PagingData.from(
         listOf(
