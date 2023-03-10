@@ -17,6 +17,10 @@ class RoomFavoritesDataSource @Inject constructor(
         return favoriteDao.loadFavorites().map { it.toCharactersModel() }
     }
 
+    override suspend fun isFavorite(characterId: Int): Boolean {
+       return favoriteDao.hasFavorite(characterId) != null
+    }
+
     override suspend fun save(character: Character) {
         favoriteDao.insertFavorite(character.toFavoriteEntity())
     }
