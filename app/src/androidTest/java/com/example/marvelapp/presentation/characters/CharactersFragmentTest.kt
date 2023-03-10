@@ -9,6 +9,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.marvelapp.R
+import com.example.marvelapp.di.CoroutinesTestModule
 import com.example.marvelapp.extension.asJsonString
 import com.example.marvelapp.framework.di.BaseUrlModule
 import com.example.marvelapp.launchFragmentInHiltContainer
@@ -26,7 +27,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(BaseUrlModule::class)
+@UninstallModules(BaseUrlModule::class, CoroutinesTestModule::class)
 @HiltAndroidTest
 class CharactersFragmentTest {
 
