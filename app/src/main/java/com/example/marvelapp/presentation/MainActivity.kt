@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.marvelapp.R
 import com.example.marvelapp.databinding.ActivityMainBinding
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbarApp)
+
         // referencia ao nav_host adicionado na main_activity layout
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_container) as NavHostFragment
@@ -28,10 +31,18 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         binding.bottomNavMain.setupWithNavController(navController)
 
-        // define quais os fragments top level de navegacao
+        // define quais os fragments top level de navegacao e nao mostra o botao de voltar
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.charactersFragment, R.id.favoritesFragment, R.id.aboutFragment)
+            setOf(
+                R.id.charactersFragment,
+                R.id.favoritesFragment,
+                R.id.aboutFragment,
+                R.id.sortFragment
+            )
         )
+
+        // vincula a actionBar ao navController
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         // passa para a toolbar referencia do navController para exibir o titulo de acordo com a navagacao
         binding.toolbarApp.setupWithNavController(navController, appBarConfiguration)
