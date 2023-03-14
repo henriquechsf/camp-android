@@ -55,6 +55,12 @@ class CharactersViewModel @Inject constructor(
         action.value = Action.Sort
     }
 
+    fun closeSearch() {
+        if (currentSearchQuery.isNotEmpty()) {
+            currentSearchQuery = ""
+        }
+    }
+
     private fun getPageConfig() = PagingConfig(pageSize = 20)
 
     sealed class UiState {

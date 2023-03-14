@@ -31,7 +31,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CharactersFragment : Fragment(), SearchView.OnQueryTextListener {
+class CharactersFragment : Fragment(),
+    SearchView.OnQueryTextListener,
+    MenuItem.OnActionExpandListener {
 
     private var _binding: FragmentCharactersBinding? = null
     private val binding: FragmentCharactersBinding get() = _binding!!
@@ -193,6 +195,13 @@ class CharactersFragment : Fragment(), SearchView.OnQueryTextListener {
         val searchItem = menu.findItem(R.id.menu_search)
         searchView = searchItem.actionView as SearchView
 
+        searchItem.setOnActionExpandListener(this)
+
+        if (viewModel.currentSearchQuery.isNotEmpty()) {
+            searchItem.expandActionView()
+            searchView.setQuery(viewModel.currentSearchQuery, false)
+        }
+
         searchView.run {
             isSubmitButtonEnabled = true
             setOnQueryTextListener(this@CharactersFragment)
@@ -218,6 +227,16 @@ class CharactersFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+        return true
+    }
+
+    override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+        return true
+    }
+
+    override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+        viewModel.closeSearch()
+        viewModel.searchCharacters()
         return true
     }
 
