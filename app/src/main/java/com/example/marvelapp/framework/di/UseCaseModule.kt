@@ -12,6 +12,8 @@ import com.example.core.usecase.GetCharactersSortingUseCase
 import com.example.core.usecase.GetCharactersSortingUseCaseImpl
 import com.example.core.usecase.GetFavoritesUseCase
 import com.example.core.usecase.GetFavoritesUseCaseImpl
+import com.example.core.usecase.SaveCharacterSortingUseCase
+import com.example.core.usecase.SaveCharacterSortingUseCaseImpl
 import com.example.core.usecase.base.RemoveFavoriteUseCase
 import com.example.core.usecase.base.RemoveFavoriteUseCaseImpl
 import dagger.Binds
@@ -47,4 +49,9 @@ interface UseCaseModule {
     fun bindGetCharacterSortingUseCase(
         useCase: GetCharactersSortingUseCaseImpl,
     ): GetCharactersSortingUseCase
+
+    @Binds
+    fun bindSaveCharacterSortingUseCase(
+        useCase: SaveCharacterSortingUseCaseImpl
+    ): SaveCharacterSortingUseCase
 }
