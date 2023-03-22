@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 apply plugin: 'kotlin-kapt'
@@ -17,6 +18,15 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
+    signingConfigs {
+        release {
+            storeFile file('/home/henrique/Projetos/Kotlin/curso-android-marvel-app/store/marvel_app_key_store.jks')
+            storePassword 'marvel@123'
+            keyAlias 'marvel-app'
+            keyPassword 'marvel@123'
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.marvelapp"
         minSdkVersion 23
@@ -24,16 +34,40 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.marvelapp.CustomTestRunner"
+
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
 
         buildConfigField "String", "PUBLIC_KEY", apikeyProperties['PUBLIC_KEY']
         buildConfigField "String", "PRIVATE_KEY", apikeyProperties['PRIVATE_KEY']
         buildConfigField "String", "BASE_URL", apikeyProperties['BASE_URL']
     }
 
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        animationsDisabled = true
+    }
+
+
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            debuggable true
+        }
+        staging {
+            initWith debug
+            minifyEnabled true
+            applicationIdSuffix '.staging'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'proguard-rules-staging.pro'
+        }
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -80,9 +114,10 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // Room
-    def room_version = "2.3.0"
+    def room_version = "2.4.2"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     // Paging3
@@ -93,6 +128,10 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
     // Other Libs
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation "androidx.datastore:datastore-preferences:1.0.0-rc02"
@@ -102,6 +141,22 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     // Instrumentation tests
+    def espresso_version = '3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestUtil 'androidx.test:orchestrator:1.4.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+
+    // For instrumented tests.
+    def fragment_version = "1.4.0"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // MockWebServer para os testes de UI
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.3"
+
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 }
