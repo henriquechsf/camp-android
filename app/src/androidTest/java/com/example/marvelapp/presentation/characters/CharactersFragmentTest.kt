@@ -1,23 +1,21 @@
 package com.example.marvelapp.presentation.characters
 
-import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.marvelapp.R
+import com.example.marvelapp.di.CoroutinesTestModule
 import com.example.marvelapp.extension.asJsonString
 import com.example.marvelapp.framework.di.BaseUrlModule
 import com.example.marvelapp.launchFragmentInHiltContainer
+import com.example.marvelapp.presentation.characters.adapters.CharactersViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -26,7 +24,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(BaseUrlModule::class)
+@UninstallModules(BaseUrlModule::class, CoroutinesTestModule::class)
 @HiltAndroidTest
 class CharactersFragmentTest {
 
